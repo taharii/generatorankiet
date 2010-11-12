@@ -1,0 +1,23 @@
+body{
+color: gainsboro;
+background-color: black;
+}
+#popup{
+clear: both;
+width:250px;
+background-color: orange;
+padding-left:10px;
+overflow: hidden;
+height:35px;
+}
+#popup:hover{
+height:auto;
+padding-bottom:10px;
+}
+#search{
+overflow: visible;
+background-color: orange;
+color: black;
+width:100%;
+height:35px;
+}
