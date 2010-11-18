@@ -3,6 +3,7 @@ color: gainsboro;
 background-color: black;
 }
 #popup{
+float: right;
 clear: both;
 width:250px;
 background-color: orange;
