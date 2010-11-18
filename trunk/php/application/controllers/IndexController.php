@@ -4,7 +4,7 @@ class IndexController extends Application_Plugin_GAController
 {
     public function indexAction()
     {
-     
+        
     }
 
     public function logoutAction()
