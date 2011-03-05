@@ -1,1 +1,13 @@
- Działa
+<table>
+<?php
+foreach($this->data->toArray() as $row)
+{
+?>
+ <tr>
+     <td><?= $row['title'] ?></td>
+     <td><?= $row['time_stamp']?></td>
+ </tr>
+ <?php
+}
+?>
+</table>
