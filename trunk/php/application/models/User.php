@@ -1,8 +1,8 @@
 <?php
 
-class Application_Model_Users extends Zend_Db_Table
+class Application_Model_User extends Zend_Db_Table_Abstract
 {
-    protected $_name = 'users';
+    protected $_name = 'user';
 
     public function getUsersList()
     {
@@ -22,5 +22,13 @@ class Application_Model_Users extends Zend_Db_Table
                  ->where('login =?', $login)
                  ->where('password =?', $pass)
                  );
+    }
+
+    public function increment($user)
+    {
+        $this->update(
+                array('id' =>new Zend_Db_Expr("id + 1")),
+                array('login =?'=> $user)
+                );
     }
 }
