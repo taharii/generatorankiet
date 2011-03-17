@@ -2,21 +2,27 @@ body{
 color: gainsboro;
 background-color: black;
 }
-#popup{
-float: right;
-clear: both;
+
+#popup,#menu{
 width:250px;
 background-color: orange;
 padding-left:10px;
-overflow: hidden;
-height:35px;
 }
-#popup:hover{
+#popup{
+float: right;
+clear: both;
+height:35px;
+position:relative;
+cursor:pointer;
+}
+#menu{
+display:none;
+position:relative;
+top:0;
+left:-10px;
 height:auto;
-padding-bottom:10px;
 }
 #search{
-overflow: visible;
 background-color: orange;
 color: black;
 width:100%;
