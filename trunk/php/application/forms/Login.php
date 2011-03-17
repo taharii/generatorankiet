@@ -4,8 +4,6 @@ class Application_Form_Login extends Zend_Form
     public function init()
     {
 	//$this->setElementDecorators( array( 'ViewHelper') );
-        $this->setMethod('post');
-
         $this->addElement('text', 'login', array(
             'required'   => true,
         ));

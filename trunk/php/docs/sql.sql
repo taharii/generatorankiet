@@ -3,7 +3,7 @@
 -- http://www.phpmyadmin.net
 --
 -- Host: localhost
--- Czas wygenerowania: 05 Mar 2011, 14:46
+-- Czas wygenerowania: 17 Mar 2011, 20:12
 -- Wersja serwera: 5.1.41
 -- Wersja PHP: 5.3.1
 
@@ -22,6 +22,21 @@ SET SQL_MODE="NO_AUTO_VALUE_ON_ZERO";
 -- --------------------------------------------------------
 
 --
+-- Struktura tabeli dla  `option`
+--
+
+CREATE TABLE IF NOT EXISTS `option` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `question_id` int(11) NOT NULL,
+  `content` varchar(512) COLLATE utf8_polish_ci NOT NULL,
+  `scale` int(11) NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `question_id` (`question_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci AUTO_INCREMENT=1 ;
+
+-- --------------------------------------------------------
+
+--
 -- Struktura tabeli dla  `poll`
 --
 
@@ -31,17 +46,24 @@ CREATE TABLE IF NOT EXISTS `poll` (
   `description` text COLLATE utf8_polish_ci NOT NULL,
   `time_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   `user_id` int(11) NOT NULL,
+  `status` int(11) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci AUTO_INCREMENT=4 ;
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci AUTO_INCREMENT=3 ;
+
+-- --------------------------------------------------------
 
 --
--- Zrzut danych tabeli `poll`
+-- Struktura tabeli dla  `question`
 --
 
-INSERT INTO `poll` (`id`, `title`, `description`, `time_stamp`, `user_id`) VALUES
-(1, 'Tytek', 'jfksljflsjfsl', '2011-03-05 13:58:31', 0),
-(2, 'Tytek', 'jkjk', '2011-03-05 13:58:42', 0),
-(3, 'dsfsdf', 'fdjksjfdsk', '2011-03-05 14:02:29', 0);
+CREATE TABLE IF NOT EXISTS `question` (
+  `id` int(11) NOT NULL AUTO_INCREMENT,
+  `poll_id` int(11) NOT NULL,
+  `class` varchar(12) COLLATE utf8_polish_ci NOT NULL,
+  `content` varchar(512) COLLATE utf8_polish_ci NOT NULL,
+  PRIMARY KEY (`id`),
+  KEY `poll_id` (`poll_id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci AUTO_INCREMENT=1 ;
 
 -- --------------------------------------------------------
 
@@ -56,11 +78,4 @@ CREATE TABLE IF NOT EXISTS `user` (
   `time_stamp` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   UNIQUE KEY `login` (`login`)
-) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci AUTO_INCREMENT=2 ;
-
---
--- Zrzut danych tabeli `user`
---
-
-INSERT INTO `user` (`id`, `login`, `password`, `time_stamp`) VALUES
-(1, 'mk', '207023ccb44feb4d7dadca005ce29a64', '2010-12-28 09:04:28');
+) ENGINE=InnoDB  DEFAULT CHARSET=utf8 COLLATE=utf8_polish_ci AUTO_INCREMENT=4 ;

@@ -2,54 +2,34 @@
 
 class Application_Plugin_GAController extends Zend_Controller_Action
 {
-    protected function _GA_init()
+    public function init()
     {
-        /*/
-        $this->view->placeholder('menu')->setPrefix("<span>")
-                         ->setSeparator("</span>\n<span>")
+        $this->poll_data = new Application_Model_Poll();
+        $this->view->placeholder('menu')->setPrefix('<div class="menu_element">')
+                         ->setSeparator("</div>\n<div class=\"menu_element\">")
                          ->setIndent(4)
-                         ->setPostfix("</span>\n");
-        //*/
-        $this->login_form =  new Application_Form_Login();
+                         ->setPostfix("</div>\n");
+        $login_form = new Application_Form_Login();
         $this->session = new Zend_Session_Namespace('user');
-        if( $this->_GA_checkAuth())
+        if(isset($this->session->user))
         {
-            $this->view->placeholder('menu')->append('<a href="index/logout">Wyloguj</a>');
+            $this->view->placeholder('menu')
+                    ->append('<a href="/poll/create">Dodaj ankietę</a>');
+            $this->view->placeholder('menu')
+                    ->append('<a href="/user/">Moje ankiety</a>');
+             $this->view->placeholder('menu')
+                    ->append('<a href="/index/">Wszystkie ankiety</a>');
+            $this->view->placeholder('menu')
+                    ->append('<a href="/index/logout">Wyloguj</a>');
         }
         else
         {
-            $this->view->placeholder('menu')->append($this->login_form);
+            $this->view->placeholder('menu')->append($login_form);
             $req = $this->getRequest();
             if($req->controller != 'index' && $req->action != 'index')
             {
                 $this->_helper->actionStack('index','index');
             }
         }
-    }
-
-    protected function _GA_checkAuth()
-    {
-        $session = false;
-        if(isset($this->session->user)) return true;
-        if($this->getRequest()->isPost() && isset($_POST['login']))
-        {
-            if($this->login_form->isValid($_POST))
-            {
-                $user = new Application_Model_User();
-                $user = $user->findUser($_POST['login'], md5($_POST['pass']));
-                if(!empty($user))
-                {
-                    $this->session->user = $user->login;
-                    $this->session->user_id = $user->id;
-                    $session = true;
-                }
-            }
-        }
-        return $session;
-    }
-
-    public function init()
-    {
-        $this->_GA_init();
     }
 }
