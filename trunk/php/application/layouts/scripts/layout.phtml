@@ -5,15 +5,34 @@
   <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
   <title>GeneratorAnkiet</title>
   <link rel="stylesheet" type="text/css" media="screen" href="/styles/style.css"/>
+  <? $this->placeholder('js')
+          //prefixy/postfixy takie tam bzdury ulatwiajace pozniejsze dolaczanie skryptow
+          ->setPrefix('<script type="text/javascript" src="/scripts/')
+          ->setPostfix('"></script>')
+          //lista domyslnie ladowanych skryptow
+          ->set('jquery-1.5.1.min.js')
+  ?>
   <?= $this->placeholder('js') ?>
+  <script type="text/javascript">
+  //<![CDATA[
+    $(function(){
+      $('#popup').mouseenter(function(e){
+        $('#menu').slideDown('fast');
+      });
+      $('#popup').mouseleave(function(e){
+          $('#menu').slideUp('fast');
+      })
+    });
+  //]]>
+  </script>
 </head>
 <body>
     <div id="search">
         <div id="popup">
-        <div style="text-align:right;"><image src="/images/menu.png"/></div>
-
-        <?= $this->placeholder('menu') ?>
-        
+            <div style="text-align:right;"><image src="/images/menu.png"/></div>
+            <div id="menu">
+            <?= $this->placeholder('menu') ?>
+            </div>
         </div>
     </div>
 <div>
