@@ -3,13 +3,20 @@ class PollController extends Application_Plugin_GAController
 {
     public function indexAction()
     {
-        $poll_data = new Application_Model_Poll();
-        $poll = $poll_data->getPoll(1);
+        $poll_t = new Application_Model_Poll();
+        $poll = $poll_t->getPoll($this->getRequest()->getParam('id'));
         $questions = $poll->findDependentRowset('Application_Model_Question');
-        $list = $questions->toArray();
-        $row = $list[0];
-        $radio = new $row['class']();
-        $radio->render();
+        $this->view->poll = $poll->toArray();
+        $this->view->questions = $questions->toArray();
+        $this->view->options = array();
+        $i = 0;
+        foreach($questions as $row)
+        {
+            $this->view->options[$i] =
+                    $row->findDependentRowset('Application_Model_Option')
+                        ->toArray();
+            $i++;
+        }
     }
 
     public function createAction()
@@ -19,53 +26,60 @@ class PollController extends Application_Plugin_GAController
         {
             if($this->view->form->isValid($_POST))
             {
-                $poll = new Application_Model_Poll();
-                $poll_id = $poll->addPoll(
+                $poll_t = new Application_Model_Poll();
+                $poll_id = $poll_t->addPoll(
                         $_POST['title'],
                         $_POST['description'],
                         $this->session->user_id
                         );
-                $this->_redirect('/poll/question/p_id/'.$poll_id.'/q_id/1');
+                $this->_redirect('/poll/question/p_id/'.$poll_id.'/q_nr/1');
             }
         }
     }
     
     public function questionAction()
     {
+        $this->_helper->viewRenderer->setNoRender(true);
+        $form = new Application_Form_PollQuestion();
+
         $poll_t = new Application_Model_Poll();
         $req = $this->getRequest();
         $p_id = $req->getParam('p_id');
         $poll_r = $poll_t->getPoll($p_id);
-        $questions = $poll_r->findDependentRowset('Application_Model_Question');
-        $q_size = $questions->count();
-        $this->_helper->viewRenderer->setNoRender(true);
-        $this->view->form = new Application_Form_PollQuestion();
+        $questions_rowset = $poll_r->findDependentRowset('Application_Model_Question');
+        $q_size = $questions_rowset->count();
+        $questions = new Application_Model_Question();
         if($req->isPost())
         {
-            if($this->view->form->isValid($_POST))
+            if($form->isValid($_POST))
             {
-                $questions = new Application_Model_Question();
-                $options = new Application_Model_Option();
-                $q_id = $questions->addQuestion(
+                $option_t = new Application_Model_Option();
+                $question_t = new Application_Model_question();
+                $q_id = $question_t->addQuestion(
                         $req->getParam('p_id'),
                         $_POST['class'],
                         $_POST['question']
                         );
                 foreach($_POST['option'] as $content)
                 {
-                    $options->addOption($q_id, $content, 1);
+                    $option_t->addOption($q_id, $content, 1);
                 }
-                $this->_redirect('/poll/question/p_id/'.$p_id.'/q_nr/'.($q_size+1));
+                $this->_redirect('/poll/question/p_id/'.$p_id.'/q_nr/'.($q_size+2));
             }
         }
         else
         {
             if($req->getParam('q_nr')<=$q_size)
             {
-                $this->view->form->fillForm('bardzo','radio',array('lol','bol'));
+                $questions_array =  $questions_rowset->toArray();
+                $q_id = $questions_array[$req->getParam('q_nr')-1]['id'];
+                $question = $question_t->getQuestionAndOptionsArray($q_id);
+                $q = $question['question'];
+                $opts = $question['options'];
+                $form->fillForm($q['content'],$q['class'],$opts);
             }
-            echo $this->view->form;
         }
+        echo $form;
     }
 
 }

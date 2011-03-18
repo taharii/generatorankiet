@@ -4,8 +4,7 @@ foreach($this->data->toArray() as $row)
 {
 ?>
  <tr>
-     <td><?= $row['login'] ?></td>
-     <td><?= $row['title'] ?></td>
+     <td><a href="/poll/index/id/<?= $row['id'] ?>"><?= $row['title'] ?></a></td>
      <td><?= $row['time_stamp']?></td>
  </tr>
  <?php
