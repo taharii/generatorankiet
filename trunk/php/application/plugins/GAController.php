@@ -25,11 +25,6 @@ class Application_Plugin_GAController extends Zend_Controller_Action
         else
         {
             $this->view->placeholder('menu')->append($login_form);
-            $req = $this->getRequest();
-            if($req->controller != 'index' && $req->action != 'index')
-            {
-                $this->_helper->actionStack('index','index');
-            }
         }
     }
 }
