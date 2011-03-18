@@ -44,15 +44,23 @@ class Application_Model_Poll extends Zend_Db_Table_Abstract
         {
             $select = $this->select(Zend_Db_Table::SELECT_WITH_FROM_PART);
             $select->setIntegrityCheck(false)
-                ->join('user', 'user.id = poll.user_id');
+                         ->join(
+                        'user',
+                        'user.id = poll.user_id',
+                        array('poll.id','poll.title','poll.time_stamp','user.login')
+                        );
             return $this->fetchAll($select);
         }
         else
         {
             $select = $this->select(Zend_Db_Table::SELECT_WITH_FROM_PART);
             $select->setIntegrityCheck(false)
-                ->join('user', 'user.id = poll.user_id')
-                ->where('user_id = ?', $user);
+                     ->join(
+                        'user',
+                        'user.id = poll.user_id',
+                        array('poll.id','poll.title','poll.time_stamp','user.login')
+                        )
+                     ->where('user_id = ?', $user);
             return $this->fetchAll($select);
         }
     }

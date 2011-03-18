@@ -12,6 +12,11 @@ class Application_Model_Question extends Zend_Db_Table_Abstract
             'refTableClass' => 'Application_Model_Poll',
             'refColumns' => 'id',
             ),
+        'option'=> array(
+            'columns' => 'id',
+            'refTableClass' => 'Application_Model_Option',
+            'refColumns' => 'question_id',
+            ),
         );
     
     public function addQuestion($poll_id, $class,$content)
@@ -24,6 +29,20 @@ class Application_Model_Question extends Zend_Db_Table_Abstract
                     )
                 );
         return $id;
+    }
+
+    public function getQuestionAndOptionsArray($q_id)
+    {
+       $ret = array();
+       $ret['question'] =
+       $this->fetchRow($this->select()
+               ->where('id =?', $q_id)
+               );
+       $ret['options'] = $ret['question']
+                ->findDependentRowset('Application_Model_Option')
+                ->toArray();
+       $ret['question'] = $ret['question']->toArray();
+       return $ret;
     }
 }
 ?>

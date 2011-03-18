@@ -1,1 +1,21 @@
-pytania
+<div>
+    <?= $this->poll['title'] ?>
+</div>
+<div>
+    <?= $this->poll['description']?>
+</div>
+<?php for($i=0;$i<count($this->questions); $i++){ ?>
+<div>
+    <div><?= $this->questions[$i]['content'] ?></div>
+    <ul>
+    <?php for($j=0;$j< count($this->options[$i]); $j++){ ?>
+        <li>
+            <?= $this->options[$i][$j]['content'] ?>
+            <input name="<?= "q[$i][]"?>"
+                   type="<?= $this->questions[$i]['class']?>"
+                   value="<?= $this->options[$i][$j]['id'] ?>">
+        </li>
+    <?php } ?>
+    </ul>
+</div>
+<?php } ?>

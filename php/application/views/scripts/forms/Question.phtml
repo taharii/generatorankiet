@@ -19,7 +19,7 @@ function dodaj_element(kontener)
     <?= $this->element->class ?>
     <?= $this->element->add ?>
     <div id="options">
-        <input type="text" name="option[]" /><br/>
+        <?= $this->element->option ?>
     </div>
-        <?= $this->element->submit ?>
+    <?= $this->element->submit ?>
 </form>

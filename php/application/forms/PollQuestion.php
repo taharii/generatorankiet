@@ -55,7 +55,6 @@ class Application_Form_PollQuestion extends Zend_Form
 
     public function fillForm($question, $class, $options)
     {
-        /*
         $this->getElement('question')->setValue($question);
         $this->getElement('class')->setValue($class);
         for($i = 0; $i< count($options); $i++)
@@ -65,10 +64,10 @@ class Application_Form_PollQuestion extends Zend_Form
                 "option[]",
                 array(
                     'required'=>false,
+                    'value'=> $options[$i]['content'],
                     )
                 );
         }
-         */
     }
 }
 ?>
